@@ -12,6 +12,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+//按需引入
 // import { ElButton } from 'element-plus'
 // import 'element-plus/theme-chalk/el-button.css'
 // import 'element-plus/theme-chalk/base.css'

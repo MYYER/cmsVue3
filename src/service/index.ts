@@ -1,6 +1,7 @@
 //service统一出口
 import HYRequest from './request'
 import { BASE_URL, TIME_OUT } from './request/config'
+import localCache from '@/utils/cache'
 
 //axios实例
 const hyRequest = new HYRequest({
@@ -9,10 +10,15 @@ const hyRequest = new HYRequest({
   interceptors: {
     requestInterceptor: (config) => {
       //携带token的拦截
-      // let token = ''
-      // if(token){
-      //   config.headers.Authorization = `Bearer ${token}`
-      // }
+      const token = localCache.getCache('token')
+      if (token) {
+        if (!config?.headers) {
+          throw new Error(
+            `Expected 'config' and 'config.headers' not to be undefined`
+          )
+        }
+        config.headers.Authorization = `Bearer ${token}`
+      }
       console.log('请求成功的拦截')
       return config
     },

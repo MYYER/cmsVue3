@@ -24,7 +24,6 @@ export default defineComponent({
       number: '',
       code: ''
     })
-
     return {
       phone,
       rules
