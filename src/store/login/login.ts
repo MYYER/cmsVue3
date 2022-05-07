@@ -5,6 +5,7 @@ import {
   requestUserMenusByRoleId
 } from '@/service/login/login'
 import localCache from '@/utils/cache'
+import { mapMenusToRoutes } from '@/utils/map-menus'
 
 import { IAccount } from '@/service/login/type'
 import { ILoginState } from './types'
@@ -24,13 +25,19 @@ const LoginModule: Module<ILoginState, IRootState> = {
   mutations: {
     changeToken(state, token: string) {
       state.token = token
-      console.log(state.token)
     },
     changeUserInfo(state, userInfo: any) {
       state.userInfo = userInfo
     },
     changeUserMenus(state, userMenus: any) {
       state.userMenus = userMenus
+      //userMenus => routes
+      const routes = mapMenusToRoutes(userMenus)
+      console.log(routes)
+      routes.forEach((route) => {
+        router.addRoute('main', route)
+      })
+      //将routes => router.main.children
     }
   },
   actions: {
@@ -38,17 +45,12 @@ const LoginModule: Module<ILoginState, IRootState> = {
       console.log('执行accountLoginAction', payload)
       //1.实现登录逻辑
       const loginResult = await accountLoginRequest(payload)
-      console.log('loginResult')
-      console.log(loginResult)
-      console.log(loginResult.data.id, loginResult.data.token)
       const { id, token } = loginResult.data
       commit('changeToken', token)
       localCache.setCache('token', token)
 
       //2. 请求用户信息
       const userInfoResult = await requestUserInfoById(id)
-      console.log('userInfoResult')
-      console.log(userInfoResult)
       const userInfo = userInfoResult.data
       commit('changeUserInfo', userInfo)
       localCache.setCache('userInfo', userInfo)
@@ -56,8 +58,6 @@ const LoginModule: Module<ILoginState, IRootState> = {
       //3.请求用户菜单
       const userMenusResult = await requestUserMenusByRoleId(userInfo.role.id)
       const userMenus = userMenusResult.data
-      console.log('userMenus')
-      console.log(userMenus)
       commit('changeUserMenus', userMenus)
       localCache.setCache('userMenus', userMenus)
 
