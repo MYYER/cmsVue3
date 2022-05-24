@@ -4,7 +4,7 @@ import 'normalize.css'
 import './assets/css/index.less'
 
 // import './service/axios_demo'
-import hyRequest from './service'
+// import hyRequest from './service'
 
 import App from './App.vue'
 

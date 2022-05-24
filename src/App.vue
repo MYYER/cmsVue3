@@ -9,7 +9,9 @@
       <el-button type="primary">按钮2</el-button>
       <el-button type="danger">按钮3</el-button>
     -->
-    <router-view></router-view>
+    <el-config-provider :locale="zhCn">
+      <router-view></router-view>
+    </el-config-provider>
   </div>
 </template>
 
@@ -20,8 +22,19 @@ import { defineComponent } from 'vue'
 // import 'element-plus/theme-chalk/el-button.css'
 // import 'element-plus/theme-chalk/base.css'
 
+import { ElConfigProvider } from 'element-plus'
+import zhCn from 'element-plus/lib/locale/lang/zh-cn'
+
 export default defineComponent({
-  name: 'App'
+  name: 'App',
+  components: {
+    ElConfigProvider
+  },
+  setup() {
+    return {
+      zhCn
+    }
+  }
 })
 </script>
 
