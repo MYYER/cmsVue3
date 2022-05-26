@@ -20,6 +20,7 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
-    'vue/no-mutation-props': 'off'
+    'vue/no-mutation-props': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off'
   }
 }

@@ -8,9 +8,10 @@
         <template v-for="item in formItems" :key="item.label">
           <el-col v-bind="colLayout">
             <el-form-item
+              v-if="!item.isHidden"
               :label="item.label"
               :rules="item.rules"
-              :style="itemLayout"
+              :style="itemStyle"
             >
               <template
                 v-if="item.type === 'input' || item.type === 'password'"
@@ -27,6 +28,7 @@
                 <el-select
                   :placeholder="item.placeholder"
                   v-bind="item.otherOptions"
+                  style="width: 100%"
                   :model-value="modelValue[`${item.field}`]"
                   @update:modelValue="handleValueChange($event, item.field)"
                 >
@@ -34,9 +36,8 @@
                     v-for="option in item.options"
                     :key="option.value"
                     :value="option.value"
+                    >{{ option.title }}</el-option
                   >
-                    {{ option.title }}
-                  </el-option>
                 </el-select>
               </template>
               <template v-else-if="item.type === 'datepicker'">
@@ -76,14 +77,14 @@ export default defineComponent({
       type: String,
       default: '100px'
     },
-    itemLayout: {
+    itemStyle: {
       type: Object,
       default: () => ({ padding: '10px 40px' })
     },
     colLayout: {
       type: Object,
       default: () => ({
-        xl: 6,
+        xl: 6, // >1920px 4个
         lg: 8,
         md: 12,
         sm: 24,
@@ -91,26 +92,25 @@ export default defineComponent({
       })
     }
   },
+  emits: ['update:modelValue'],
   setup(props, { emit }) {
     // const formData = ref({ ...props.modelValue })
-    // watch(
-    //   () => props.modelValue,
-    //   (newValue) => {
-    //     formData.value = { ...newValue }
-    //   }
-    // )
+
     // watch(
     //   formData,
     //   (newValue) => {
+    //     console.log(newValue)
     //     emit('update:modelValue', newValue)
     //   },
     //   {
     //     deep: true
     //   }
     // )
+
     const handleValueChange = (value: any, field: string) => {
       emit('update:modelValue', { ...props.modelValue, [field]: value })
     }
+
     return {
       handleValueChange
     }
@@ -118,7 +118,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="less" scoped>
+<style scoped lang="less">
 .hy-form {
   padding-top: 22px;
 }

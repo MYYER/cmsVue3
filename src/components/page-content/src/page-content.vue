@@ -8,9 +8,14 @@
     >
       <!-- 1.header中的插槽 -->
       <template #headerHandler>
-        <el-button v-if="isCreate" type="primary" size="default"
-          >新建用户</el-button
+        <el-button
+          v-if="isCreate"
+          type="primary"
+          size="default"
+          @click="handleNewClick"
         >
+          新建用户
+        </el-button>
       </template>
       <!-- 2.列中的插槽 -->
       <template #createAt="scope">
@@ -19,10 +24,23 @@
       <template #updateAt="scope">
         <span>{{ $filters.formatTime(scope.row.updateAt) }}</span>
       </template>
-      <template #handler>
+      <template #handler="scope">
         <div class="handle-btns">
-          <el-button v-if="isUpdate" size="small" type="text">编辑</el-button>
-          <el-button v-if="isDelete" size="small" type="text">删除</el-button>
+          <el-button
+            v-if="isUpdate"
+            size="small"
+            type="text"
+            @click="handleEditClick(scope.row)"
+            >编辑</el-button
+          >
+          <el-button
+            v-if="isDelete"
+            size="small"
+            type="text"
+            @click="handleDeleteClick(scope.row)"
+          >
+            删除
+          </el-button>
         </div>
       </template>
 
@@ -60,7 +78,8 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props) {
+  emits: ['newBtnClick', 'editBtnClick'],
+  setup(props, { emit }) {
     const store = useStore()
     //0.获取操作的权限
     const isCreate = usePermission(props.pageName, 'create')
@@ -68,7 +87,7 @@ export default defineComponent({
     const isDelete = usePermission(props.pageName, 'delete')
     const isQuery = usePermission(props.pageName, 'query')
     //1.双向绑定pageInfo
-    const pageInfo = ref({ currentPage: 0, pageSize: 10 })
+    const pageInfo = ref({ currentPage: 1, pageSize: 10 })
     watch(pageInfo, () => getPageData())
     //2.发送网络请求
     const getPageData = (queryInfo: any = {}) => {
@@ -76,7 +95,7 @@ export default defineComponent({
       store.dispatch('system/getPageListAction', {
         pageName: props.pageName,
         queryInfo: {
-          offset: pageInfo.value.currentPage * pageInfo.value.pageSize,
+          offset: (pageInfo.value.currentPage - 1) * pageInfo.value.pageSize,
           size: pageInfo.value.pageSize,
           ...queryInfo
         }
@@ -100,6 +119,22 @@ export default defineComponent({
         return true
       }
     )
+
+    //5. 删除/编辑/新建操作
+    const handleNewClick = () => {
+      emit('newBtnClick')
+    }
+    const handleEditClick = (item: any) => {
+      emit('editBtnClick', item)
+    }
+    const handleDeleteClick = (item: any) => {
+      console.log('删除', item)
+      store.dispatch('system/deletePageDataAction', {
+        pageName: props.pageName,
+        id: item.id
+      })
+    }
+
     return {
       dataList,
       dataCount,
@@ -108,7 +143,10 @@ export default defineComponent({
       otherPropSlots,
       isCreate,
       isUpdate,
-      isDelete
+      isDelete,
+      handleDeleteClick,
+      handleNewClick,
+      handleEditClick
     }
   }
 })
