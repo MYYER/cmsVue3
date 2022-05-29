@@ -87,7 +87,6 @@ const systemModule: Module<ISystemState, IRootState> = {
 
       //3.将数据存储到state中
       const { list, totalCount } = pageResult.data
-      console.log(list)
       const changePageName =
         pageName.slice(0, 1).toUpperCase() + pageName.slice(1)
       commit(`change${changePageName}List`, list)

@@ -26,7 +26,6 @@ import { defineComponent, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 
 import HyForm from '@/base-ui/form'
-import store from '@/store'
 
 export default defineComponent({
   components: {
@@ -38,6 +37,10 @@ export default defineComponent({
       required: true
     },
     defaultInfo: {
+      type: Object,
+      default: () => ({})
+    },
+    otherInfo: {
       type: Object,
       default: () => ({})
     },
@@ -67,14 +70,14 @@ export default defineComponent({
         //编辑
         store.dispatch('system/editPageDataAction', {
           pageName: props.pageName,
-          editData: { ...formData.value },
+          editData: { ...formData.value, ...props.otherInfo },
           id: props.defaultInfo.id
         })
       } else {
         // 新建
         store.dispatch('system/createPageDataAction', {
           pageName: props.pageName,
-          newData: { ...formData.value }
+          newData: { ...formData.value, ...props.otherInfo }
         })
       }
     }
