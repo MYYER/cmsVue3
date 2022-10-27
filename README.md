@@ -1,29 +1,14 @@
-# vue3-ts-cms
+# 一、项目描述
+### 本项目是基于 Vue3 全家桶、Element-plus、Echarts、TypeScript 等技术栈，运用组件化思想开发的一个可复用的后台信息管理平台，开发过程采用 eslint、git husky 规范代码和提交。项目主要功能模块包括：用户登录、用户管理、部门管理、菜单管理、权限管理、数据统计、问题反馈，支持数据新增、修改、删除、模糊查找
+# 二、项目展示
+### 用户登录页面
+![](./preview/login.jpg)
+### 用户管理页面
+![](./preview/user.jpg)
+### 角色管理页面
+![](./preview/role.jpg)
+### 商品管理页面
+![](./preview/goods.jpg)
+### 数据统计页面
+![](./preview/data.jpg)
 
-## Project setup
-
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-
-```
-npm run build
-```
-
-### Lints and fixes files
-
-```
-npm run lint
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
