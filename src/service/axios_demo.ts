@@ -80,7 +80,7 @@ axios
 axios.interceptors.request.use(
   (config) => {
     //想做的一些操作
-    //1.给请求添加
+    //1.给请求添加token
     //2.isLoading动画
     console.log('请求成功拦截')
     return config
